@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="email_template_time_off" model="mail.template">
+      <field name="name">Leave Approved - Notify HR</field>
+      <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+      <field name="subject">Leave Approved: {{object.employee_id.name}}</field>
+      <field name="email_to">{{ ','.join(user.employee_id.work_email for user in object.holiday_status_id.responsible_ids if user.employee_id and user.employee_id.work_email) }}</field>
+      <field name="email_from">noreply@edgematics.ai</field>
+      <field name="body_html">
+        <![CDATA[
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+         <body style="margin:0; padding:0; background:linear-gradient(135deg,#22223B 0%,#4A4E69 100%); font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
+        <div style="max-width:700px; margin:40px auto; padding:0 5vw;">
+          <div style="background:rgba(255,255,255,0.97); border-radius:18px; box-shadow:0 8px 32px 0 rgba(31,38,135,0.13); overflow:hidden;">
+
+            <!-- Header Section -->
+            <div style="background:linear-gradient(90deg,#c0c3e9 0%,#9f8fff 100%); padding:32px 28px 22px 28px;">
+              <h1 style="color:#24243e; font-size:2em; margin:0; font-weight:700; letter-spacing:1px;">Leave Request Approved</h1>
+              <p style="color:#23364d; font-size:1.18em; margin:10px 0 0 0;">Notification to HR Team</p>
+            </div>
+
+            <!-- Content Section -->
+            <div style="padding:36px 30px 24px 30px;">
+              <p style="font-size:1.1em; color:#454e5e; margin:0 0 18px;">Dear HR Team,</p>
+              <p style="font-size:1.05em; color:#454e5e; margin:0 0 28px;">
+                The following leave request has been <strong>approved</strong> by the reporting manager. Below are the details:
+              </p>
+
+              <!-- Detail Block with each value on new line -->
+              <div style="margin:0; padding:24px 22px; background:linear-gradient(94deg,#eaf2fb 0%,#e8e0ff 100%); border-radius:12px;">
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Employee Name:</span>
+                  <span style="color:#22223b;"><t t-out="object.employee_id.name or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Employee Code:</span>
+                  <span style="color:#22223b;"><t t-out="object.employee_id.employee_code or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Company Name:</span>
+                  <span style="color:#22223b;"><t t-out="object.employee_id.company_id.name or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Department:</span>
+                  <span style="color:#22223b;"><t t-out="object.department_id.name or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Job Title:</span>
+                  <span style="color:#22223b;"><t t-out="object.employee_id.job_title or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Leave Type:</span>
+                  <span style="color:#22223b;"><t t-out="object.holiday_status_id.name or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">From:</span>
+                  <span style="color:#22223b;"><t t-out="object.request_date_from or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">To:</span>
+                  <span style="color:#22223b;"><t t-out="object.request_date_to or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">Number of Days:</span>
+                  <span style="color:#22223b;"><t t-out="object.number_of_days or 'N/A'" /></span>
+                </div>
+                <div style="padding:10px 0;">
+                  <span style="color:#6c63ff; font-weight:600; display:block;">First Approved By:</span>
+                  <span style="color:#22223b;"><t t-out="object.employee_id.parent_id.name or 'N/A'" /></span>
+                </div>
+              </div>
+
+              <!-- Action Suggestion -->
+              <p style="font-size:1rem; color:#333; margin-top:0;">
+                Kindly proceed with the necessary HR operations.
+              </p>
+
+              <!-- CTA -->
+              <div style="margin-top:30px;">
+                <a href="#" style="display:inline-block; background:linear-gradient(90deg,#845ef7 0%,#5f72ff 100%); color:#fff; font-size:1em; padding:12px 32px; border-radius:6px; text-decoration:none; font-weight:600; letter-spacing:1px; box-shadow:0 2px 8px rgba(52,42,193,0.10);">
+                  View in HR Portal
+                </a>
+              </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div style="padding:18px 30px 32px 30px; text-align:center; background:#f2f1fa; border-bottom-right-radius:17px; border-bottom-left-radius:17px;">
+              <p style="color:#7e7aaf; font-size:14px; margin:0;">
+                Regards,<br/>
+                <strong>Odoo HR System</strong><br/>
+                <span style="font-style:italic;">This is an automated notification. Please do not reply.</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </body>
+        ]]>
+      </field>
+    </record>
+
+
+    <record id="email_template_work_from_home" model="mail.template">
+      <field name="name">Work From Home Request - Notify HR</field>
+      <field name="model_id" ref="remote_work.model_remote_work_request"/>
+      <field name="subject">Work From Home Approved: {{object.employee_id.name}}</field>
+      <field name="email_to"> {{ctx.get('email_to')}}</field>
+      <field name="email_from">noreply@edgematics.ai</field>
+
+      <field name="body_html">
+        <![CDATA[
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+ <body style="margin:0; padding:0; background-color:#f0f4f8; font-family:Segoe UI, Helvetica, Arial, sans-serif;">
+
+        <div style="max-width:700px; margin:40px auto; padding:0 5vw;">
+          <div style="border-radius:14px; background:#ffffff; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow:hidden;">
+
+            <!-- Header -->
+            <div style="background: linear-gradient(90deg, #00c6ff, #0072ff); padding:30px 28px;">
+              <h1 style="margin:0; color:#ffffff; font-size:1.8rem; font-weight:600;">Work From Home Request Approved</h1>
+              <p style="margin:8px 0 0; color:#e0f7ff; font-size:1rem;">Automated Notification to HR Team</p>
+            </div>
+
+            <!-- Body Content -->
+            <div style="padding:32px 28px;">
+              <p style="font-size:1.05rem; color:#333; margin:0 0 16px;">Dear HR Team,</p>
+              <p style="font-size:1rem; color:#444; margin:0 0 26px;">
+                The following <strong>work from home</strong> request has been approved by the reporting manager. Below are the request details:
+              </p>
+
+              <!-- Details Section -->
+              <div style="background:#f8fafe; border-radius:10px; padding:20px 24px; margin-bottom:30px;">
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Employee Name:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Employee Code:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.employee_code or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Company Name:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.company_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Department:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.department_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Job Title:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.job_title or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Request Type:</span>
+                  <span style="color:#222; margin-left:10px;">
+                    <t t-out="dict(object.fields_get(allfields=['in_mode'])['in_mode']['selection']).get(object.in_mode, 'N/A')" />
+                  </span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">From:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.check_in or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">To:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.check_out or 'N/A'" /></span>
+                </div>
+
+                <div style="margin-bottom:0;">
+                  <span style="color:#0072ff; font-weight:600;">Approved by:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.parent_id.name or 'N/A'" /></span>
+                </div>
+              </div>
+
+              <!-- Action Suggestion -->
+              <p style="font-size:1rem; color:#333; margin-top:0;">
+                Kindly proceed with the necessary HR operations.
+              </p>
+
+              <!-- CTA (Optional - can link to HR Portal) -->
+              <div style="margin-top:30px;">
+                <a href="#" style="display:inline-block; background-color:#0072ff; color:#fff; padding:12px 28px; font-size:0.95rem; border-radius:6px; text-decoration:none; font-weight:600;">
+                  Open in HR Dashboard
+                </a>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="background:#f2f2f6; text-align:center; padding:20px 20px; border-top:1px solid #ddd;">
+              <p style="font-size:13px; color:#888; margin:0;">
+                Regards,<br/>
+                <strong>Odoo HR System</strong><br/>
+                <em>This is an automated HR notification</em>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </body>
+        ]]>
+      </field>
+    </record>
+
+
+    <record id="email_template_attendence_request" model="mail.template">
+      <field name="name">Attendence Request - Notify HR</field>
+      <field name="model_id" ref="edgematices_attendence_request.model_request_attendence"/>
+      <field name="subject">Attendence Request Approved: {{object.employee_id.name}}</field>
+      <field name="email_to">{{ctx.get('email_to')}}</field>
+      <field name="email_from">noreply@edgematics.ai</field>
+
+      <field name="body_html">
+        <![CDATA[
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+ <body style="margin:0; padding:0; background-color:#f0f4f8; font-family:Segoe UI, Helvetica, Arial, sans-serif;">
+
+        <div style="max-width:700px; margin:40px auto; padding:0 5vw;">
+          <div style="border-radius:14px; background:#ffffff; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow:hidden;">
+
+            <!-- Header -->
+            <div style="background: linear-gradient(90deg, #3f41b3ff, #274468ff); padding:30px 28px;">
+              <h1 style="margin:0; color:#ffffff; font-size:1.8rem; font-weight:600;">Attendence Request Approved</h1>
+              <p style="margin:8px 0 0; color:#e0f7ff; font-size:1rem;">Automated Notification to HR Team</p>
+            </div>
+
+            <!-- Body Content -->
+            <div style="padding:32px 28px;">
+              <p style="font-size:1.05rem; color:#333; margin:0 0 16px;">Dear HR Team,</p>
+              <p style="font-size:1rem; color:#444; margin:0 0 26px;">
+                The following <strong>Attendence Request</strong> request has been approved by the reporting manager. Below are the request details:
+              </p>
+
+              <!-- Details Section -->
+              <div style="background:#f8fafe; border-radius:10px; padding:20px 24px; margin-bottom:30px;">
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Employee Name:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Employee Code:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.employee_code or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Company Name:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.company_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Department:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.department_id.name or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">Job Title:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.job_title or 'N/A'" /></span>
+                </div>
+                
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">From:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.date_in or 'N/A'" /></span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <span style="color:#0072ff; font-weight:600;">To:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.date_out or 'N/A'" /></span>
+                </div>
+
+                <div style="margin-bottom:0;">
+                  <span style="color:#0072ff; font-weight:600;">Approved by:</span>
+                  <span style="color:#222; margin-left:10px;"><t t-out="object.employee_id.parent_id.name or 'N/A'" /></span>
+                </div>
+              </div>
+
+              <!-- Action Suggestion -->
+              <p style="font-size:1rem; color:#333; margin-top:0;">
+                Kindly proceed with the necessary HR operations.
+              </p>
+
+              <!-- CTA (Optional - can link to HR Portal) -->
+              <div style="margin-top:30px;">
+                <a href="#" style="display:inline-block; background-color:#0072ff; color:#fff; padding:12px 28px; font-size:0.95rem; border-radius:6px; text-decoration:none; font-weight:600;">
+                  Open in HR Dashboard
+                </a>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="background:#f2f2f6; text-align:center; padding:20px 20px; border-top:1px solid #ddd;">
+              <p style="font-size:13px; color:#888; margin:0;">
+                Regards,<br/>
+                <strong>Odoo HR System</strong><br/>
+                <em>This is an automated HR notification</em>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </body>
+        ]]>
+      </field>
+    </record>
+
+  </data>
+</odoo>
+
+
+
+
+
